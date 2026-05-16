@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Tambah Tugas — Smart Task Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="phone-wrapper">
+  <div class="phone-device">
+
+    <div class="phone-side-left" aria-hidden="true">
+      <div class="side-btn" title="Volume Up"></div>
+      <div class="side-btn" title="Volume Down"></div>
+    </div>
+    <div class="phone-side-right" aria-hidden="true">
+      <div class="side-btn" title="Power"></div>
+    </div>
+
+  <div class="phone-frame">
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span class="status-time" id="statusTime">9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12">
+          <rect x="0"    y="8"   width="3" height="4"  rx="0.5"/>
+          <rect x="4.3"  y="5.5" width="3" height="6.5" rx="0.5"/>
+          <rect x="8.6"  y="3"   width="3" height="9"  rx="0.5"/>
+          <rect x="12.9" y="0"   width="3" height="12" rx="0.5"/>
+        </svg>
+        <svg width="16" height="12" viewBox="0 0 24 18">
+          <circle cx="12" cy="16" r="2"/>
+          <path d="M6.5 11.5C8 9.9 9.9 9 12 9s3.9.9 5.5 2.5l1.8-1.8C17.1 7.5 14.7 6.5 12 6.5s-5.1 1-7.3 3.2z" opacity=".7"/>
+          <path d="M2.5 7.5C5.1 4.8 8.4 3.2 12 3.2s6.9 1.6 9.5 4.3l1.8-1.8C20.5 2.9 16.5 1 12 1S3.5 2.9.7 5.7z" opacity=".4"/>
+        </svg>
+        <svg width="26" height="12" viewBox="0 0 26 12">
+          <rect x="0" y="0.5" width="22" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="22.8" y="3.5" width="2.5" height="5" rx="1" opacity=".7"/>
+          <rect x="1.5" y="2" width="17" height="8" rx="1.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Konten halaman -->
+    <div class="phone-screen">
+
+      <!-- Header dengan tombol kembali -->
+      <div class="back-header">
+        <button class="back-btn" onclick="history.back()" aria-label="Kembali">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        <span class="back-header-title" id="pageTitle">Tugas Baru</span>
+      </div>
+
+      <!-- Form tambah / edit tugas -->
+      <form id="taskForm" novalidate>
+        <div class="form-section">
+
+          <!-- Field: Judul Tugas -->
+          <div class="form-field" id="fieldTitle">
+            <label class="form-label" for="inputTitle">Judul Tugas</label>
+            <input
+              type="text"
+              id="inputTitle"
+              class="form-input"
+              placeholder="Apa yang perlu dikerjakan?"
+              maxlength="100"
+              autocomplete="off"
+              oninput="updatePreview()"
+            >
+            <span class="form-error" id="errorTitle">Judul tugas tidak boleh kosong</span>
+          </div>
+
+          <!-- Field: Deskripsi -->
+          <div class="form-field">
+            <label class="form-label" for="inputDesc">Deskripsi</label>
+            <textarea
+              id="inputDesc"
+              class="form-textarea"
+              rows="4"
+              placeholder="Tambahkan detail atau catatan..."
+              oninput="updatePreview()"
+            ></textarea>
+          </div>
+
+          <!-- Field: Deadline -->
+          <div class="form-field" id="fieldDeadline">
+            <label class="form-label" for="inputDeadline">Deadline</label>
+            <input
+              type="date"
+              id="inputDeadline"
+              class="form-input"
+              oninput="updatePreview()"
+            >
+            <span class="form-error" id="errorDeadline">Deadline harus diisi</span>
+          </div>
+
+          <!-- Field: Prioritas -->
+          <div class="form-field">
+            <label class="form-label">Prioritas</label>
+            <div class="priority-segment" role="group" aria-label="Pilih prioritas">
+              <button type="button" class="priority-btn" data-priority="high"
+                      onclick="setPriority('high')" aria-pressed="false">
+                🔴 High
+              </button>
+              <button type="button" class="priority-btn active-medium" data-priority="medium"
+                      onclick="setPriority('medium')" aria-pressed="true">
+                🟡 Medium
+              </button>
+              <button type="button" class="priority-btn" data-priority="low"
+                      onclick="setPriority('low')" aria-pressed="false">
+                🟢 Low
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /form-section -->
+
+        <!-- Live Preview Card -->
+        <div class="preview-section">
+          <p class="preview-label">Pratinjau Kartu</p>
+          <div id="previewContainer">
+            <!-- Dirender oleh JS -->
+          </div>
+        </div>
+
+        <!-- Tombol simpan (sticky) -->
+        <div class="form-footer">
+          <button type="submit" class="btn-primary" id="submitBtn">
+            Simpan Tugas
+          </button>
+        </div>
+
+      </form>
+
+    </div><!-- /phone-screen -->
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Navigasi utama">
+      <a href="index.html" class="nav-item" aria-label="Beranda">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        <span class="nav-label">Beranda</span>
+      </a>
+      <a href="add-task.html" class="nav-item active" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        <span class="nav-label">Tambah</span>
+      </a>
+      <a href="search.html" class="nav-item" aria-label="Cari tugas">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <span class="nav-label">Cari</span>
+      </a>
+    </nav>
+
+    <!-- Home indicator -->
+    <div class="home-indicator" aria-hidden="true"></div>
+
+  </div><!-- /phone-frame -->
+  </div><!-- /phone-device -->
+</div><!-- /phone-wrapper -->
+
+<script src="js/app.js"></script>
+<script src="js/zoom-control.js"></script>
+<script>
+  // State form
+  let selectedPriority = 'medium';
+  let editId = null;
+  let isEditing = false;
+
+  // Deteksi mode edit (URL mengandung ?id=xxx)
+  editId = getUrlParam('id');
+  isEditing = !!editId;
+
+  if (isEditing) {
+    const task = getTask(editId);
+    if (task) {
+      // Set judul halaman dan tombol
+      document.getElementById('pageTitle').textContent = 'Edit Tugas';
+      document.getElementById('submitBtn').textContent = 'Simpan Perubahan';
+
+      // Pre-fill form
+      document.getElementById('inputTitle').value   = task.title;
+      document.getElementById('inputDesc').value    = task.description || '';
+      document.getElementById('inputDeadline').value = task.deadline;
+      setPriority(task.priority);
+    } else {
+      // Task tidak ditemukan, kembali ke home
+      window.location.href = 'index.html';
+    }
+  } else {
+    // Set tanggal hari ini sebagai default minimum
+    const todayStr = new Date().toISOString().split('T')[0];
+    document.getElementById('inputDeadline').min = todayStr;
+    // Default prioritas medium sudah di-set
+    updatePreview();
+  }
+
+  // Update preview awal
+  updatePreview();
+
+  // Set prioritas aktif
+  function setPriority(p) {
+    selectedPriority = p;
+    document.querySelectorAll('.priority-btn').forEach(btn => {
+      btn.classList.remove('active-high', 'active-medium', 'active-low');
+      btn.setAttribute('aria-pressed', 'false');
+    });
+    const activeBtn = document.querySelector(`.priority-btn[data-priority="${p}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add(`active-${p}`);
+      activeBtn.setAttribute('aria-pressed', 'true');
+    }
+    updatePreview();
+  }
+
+  // Update live preview card
+  function updatePreview() {
+    const title    = document.getElementById('inputTitle').value.trim() || 'Judul tugas...';
+    const deadline = document.getElementById('inputDeadline').value;
+    const priority = selectedPriority;
+
+    // Buat objek task sementara untuk preview
+    const previewTask = {
+      id: '_preview',
+      title,
+      deadline: deadline || new Date().toISOString().split('T')[0],
+      priority,
+      completed: false
+    };
+
+    const container = document.getElementById('previewContainer');
+    container.innerHTML = buildTaskCard(previewTask, 0);
+
+    // Nonaktifkan klik di preview card
+    container.querySelectorAll('a, button, [onclick]').forEach(el => {
+      el.onclick = (e) => e.stopPropagation();
+    });
+    const card = container.querySelector('.task-card');
+    if (card) card.onclick = null;
+
+    // Tambah class untuk styling
+    container.querySelector('.task-card')?.classList.add('preview-task-card');
+  }
+
+  // Validasi dan submit form
+  document.getElementById('taskForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const titleField    = document.getElementById('fieldTitle');
+    const deadlineField = document.getElementById('fieldDeadline');
+    const titleVal      = document.getElementById('inputTitle').value.trim();
+    const deadlineVal   = document.getElementById('inputDeadline').value;
+
+    let valid = true;
+
+    // Reset error sebelumnya
+    titleField.classList.remove('has-error', 'shake');
+    deadlineField.classList.remove('has-error', 'shake');
+
+    // Validasi judul
+    if (!titleVal) {
+      valid = false;
+      titleField.classList.add('has-error');
+      void titleField.offsetWidth; // trigger reflow untuk restart animasi
+      titleField.classList.add('shake');
+      titleField.addEventListener('animationend', () => titleField.classList.remove('shake'), { once: true });
+    }
+
+    // Validasi deadline
+    if (!deadlineVal) {
+      valid = false;
+      deadlineField.classList.add('has-error');
+      void deadlineField.offsetWidth;
+      deadlineField.classList.add('shake');
+      deadlineField.addEventListener('animationend', () => deadlineField.classList.remove('shake'), { once: true });
+    }
+
+    if (!valid) return;
+
+    const taskData = {
+      title: titleVal,
+      description: document.getElementById('inputDesc').value.trim(),
+      deadline: deadlineVal,
+      priority: selectedPriority
+    };
+
+    if (isEditing && editId) {
+      updateTask(editId, taskData);
+    } else {
+      addTask(taskData);
+    }
+
+    // Kembali ke home
+    window.location.href = 'index.html';
+  });
+</script>
+</body>
+</html>

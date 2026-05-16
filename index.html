@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Smart Task Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="phone-wrapper">
+  <div class="phone-device">
+
+    <!-- Tombol volume kiri -->
+    <div class="phone-side-left" aria-hidden="true">
+      <div class="side-btn" title="Volume Up"></div>
+      <div class="side-btn" title="Volume Down"></div>
+    </div>
+    <!-- Tombol power kanan -->
+    <div class="phone-side-right" aria-hidden="true">
+      <div class="side-btn" title="Power"></div>
+    </div>
+
+  <div class="phone-frame">
+
+    <!-- Status bar simulasi -->
+    <div class="status-bar">
+      <span class="status-time" id="statusTime">9:41</span>
+      <div class="status-icons">
+        <!-- Sinyal -->
+        <svg width="16" height="12" viewBox="0 0 16 12">
+          <rect x="0"    y="8"  width="3" height="4" rx="0.5"/>
+          <rect x="4.3"  y="5.5" width="3" height="6.5" rx="0.5"/>
+          <rect x="8.6"  y="3"  width="3" height="9" rx="0.5"/>
+          <rect x="12.9" y="0"  width="3" height="12" rx="0.5"/>
+        </svg>
+        <!-- WiFi -->
+        <svg width="16" height="12" viewBox="0 0 24 18">
+          <circle cx="12" cy="16" r="2"/>
+          <path d="M6.5 11.5C8 9.9 9.9 9 12 9s3.9.9 5.5 2.5l1.8-1.8C17.1 7.5 14.7 6.5 12 6.5s-5.1 1-7.3 3.2z" opacity=".7"/>
+          <path d="M2.5 7.5C5.1 4.8 8.4 3.2 12 3.2s6.9 1.6 9.5 4.3l1.8-1.8C20.5 2.9 16.5 1 12 1S3.5 2.9.7 5.7z" opacity=".4"/>
+        </svg>
+        <!-- Baterai -->
+        <svg width="26" height="12" viewBox="0 0 26 12">
+          <rect x="0" y="0.5" width="22" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="22.8" y="3.5" width="2.5" height="5" rx="1" opacity=".7"/>
+          <rect x="1.5" y="2" width="17" height="8" rx="1.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Konten halaman (scrollable) -->
+    <div class="phone-screen" id="phoneScreen">
+
+      <!-- Header One UI — judul besar -->
+      <div class="page-header">
+        <h1 class="page-title">Smart Task Manager</h1>
+        <p class="page-subtitle">Kelola tugas harianmu</p>
+      </div>
+
+      <!-- Summary chips filter -->
+      <div class="summary-chips" id="summaryChips" role="tablist">
+        <button class="chip active" data-filter="all" role="tab" aria-selected="true">
+          Semua <span class="chip-count" id="countAll">0</span>
+        </button>
+        <button class="chip" data-filter="today" role="tab" aria-selected="false">
+          Hari ini <span class="chip-count" id="countToday">0</span>
+        </button>
+        <button class="chip" data-filter="urgent" role="tab" aria-selected="false">
+          Mendesak <span class="chip-count" id="countUrgent">0</span>
+        </button>
+        <button class="chip" data-filter="done" role="tab" aria-selected="false">
+          Selesai <span class="chip-count" id="countDone">0</span>
+        </button>
+      </div>
+
+      <!-- Daftar tugas -->
+      <div class="task-list" id="taskList" role="list">
+        <!-- Dirender oleh JS -->
+      </div>
+
+      <!-- Empty state (tersembunyi awalnya) -->
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-state-icon">
+          <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="14" width="70" height="82" rx="10" fill="#e8f0fc"/>
+            <rect x="39" y="8" width="32" height="16" rx="8" fill="#c0d3f5"/>
+            <rect x="30" y="42" width="50" height="5" rx="2.5" fill="#c0d3f5"/>
+            <rect x="30" y="55" width="40" height="5" rx="2.5" fill="#c0d3f5"/>
+            <rect x="30" y="68" width="28" height="5" rx="2.5" fill="#c0d3f5"/>
+            <circle cx="79" cy="80" r="22" fill="#1259c3"/>
+            <path d="M69 80 L76 87 L90 74" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <p class="empty-title">Belum ada tugas</p>
+        <p class="empty-subtitle">Ketuk tombol + untuk menambahkan tugas pertamamu</p>
+      </div>
+
+    </div><!-- /phone-screen -->
+
+    <!-- FAB Button — tambah tugas baru -->
+    <a href="add-task.html" class="fab" id="fabBtn" aria-label="Tambah tugas baru">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+    </a>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Navigasi utama">
+      <a href="index.html" class="nav-item active" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        <span class="nav-label">Beranda</span>
+      </a>
+      <a href="add-task.html" class="nav-item" aria-label="Tambah tugas">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        <span class="nav-label">Tambah</span>
+      </a>
+      <a href="search.html" class="nav-item" aria-label="Cari tugas">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <span class="nav-label">Cari</span>
+      </a>
+    </nav>
+
+    <!-- Home indicator -->
+    <div class="home-indicator" aria-hidden="true"></div>
+
+    <!-- Modal konfirmasi hapus -->
+    <div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+      <div class="bottom-sheet">
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <h2 class="sheet-title" id="deleteTitle">Hapus tugas ini?</h2>
+        <p class="sheet-subtitle">Tugas yang dihapus tidak bisa dikembalikan lagi.</p>
+        <div class="sheet-actions">
+          <button class="btn-danger" onclick="executeDelete()">Hapus</button>
+          <button class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /phone-frame -->
+  </div><!-- /phone-device -->
+</div><!-- /phone-wrapper -->
+
+<script src="js/app.js"></script>
+<script src="js/zoom-control.js"></script>
+<script>
+  // Filter aktif
+  let activeFilter = 'all';
+
+  // Render daftar tugas ke DOM
+  function renderTasks() {
+    const allTasks = getTasks();
+    const stats = getTaskStats();
+
+    // Update angka di chips
+    document.getElementById('countAll').textContent    = stats.all;
+    document.getElementById('countToday').textContent  = stats.today;
+    document.getElementById('countUrgent').textContent = stats.urgent;
+    document.getElementById('countDone').textContent   = stats.completed;
+
+    // Filter berdasarkan chip aktif
+    let filtered = allTasks;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (activeFilter === 'today') {
+      filtered = allTasks.filter(t => {
+        if (!t.deadline) return false;
+        return new Date(t.deadline + 'T00:00:00').getTime() === today.getTime();
+      });
+    } else if (activeFilter === 'urgent') {
+      filtered = allTasks.filter(t => !t.completed && t.deadline && getDeadlineDays(t.deadline) <= 1);
+    } else if (activeFilter === 'done') {
+      filtered = allTasks.filter(t => t.completed);
+    }
+
+    // Urutkan
+    const sorted = sortTasks(filtered);
+
+    const listEl = document.getElementById('taskList');
+    const emptyEl = document.getElementById('emptyState');
+
+    if (sorted.length === 0) {
+      listEl.innerHTML = '';
+      emptyEl.style.display = 'flex';
+    } else {
+      emptyEl.style.display = 'none';
+      listEl.innerHTML = sorted.map((task, i) => buildTaskCard(task, i)).join('');
+      // Aktifkan swipe gestures
+      initSwipeGestures(listEl);
+    }
+  }
+
+  // Handler chip filter
+  document.getElementById('summaryChips').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+
+    document.querySelectorAll('#summaryChips .chip').forEach(c => {
+      c.classList.remove('active');
+      c.setAttribute('aria-selected', 'false');
+    });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected', 'true');
+
+    activeFilter = btn.dataset.filter;
+    renderTasks();
+  });
+
+  // Animasi FAB saat diklik
+  document.getElementById('fabBtn').addEventListener('click', function(e) {
+    this.classList.add('bounce');
+    this.addEventListener('animationend', () => this.classList.remove('bounce'), { once: true });
+  });
+
+  // Render saat halaman dimuat
+  renderTasks();
+</script>
+</body>
+</html>

@@ -1,0 +1,1585 @@
+/* =============================================
+   SMART TASK MANAGER — Samsung One UI Style
+   css/style.css
+   ============================================= */
+
+/* === IMPORT GOOGLE FONTS === */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+/* === CSS VARIABLES: SAMSUNG ONE UI === */
+:root {
+  --one-ui-bg: #f2f2f7;
+  --one-ui-surface: #ffffff;
+  --one-ui-surface-2: #f7f7f7;
+  --one-ui-primary: #1259c3;
+  --one-ui-primary-light: #e8f0fc;
+  --one-ui-text-primary: #000000;
+  --one-ui-text-secondary: #6e6e6e;
+  --one-ui-divider: #e5e5ea;
+  --one-ui-red: #ff3b30;
+  --one-ui-yellow: #ff9500;
+  --one-ui-green: #34c759;
+  --one-ui-radius-card: 20px;
+  --one-ui-radius-btn: 50px;
+
+  /* Dimensi frame HP — 18:9 (2:1 ratio) */
+  --frame-width: 390px;
+  --frame-height: 867px; /* 20:9 — 390 × (20/9) */
+  --status-bar-height: 44px;
+  --bottom-nav-height: 83px;
+  --home-indicator-height: 20px;
+
+  /* Bezel device */
+  --bezel-side: 9px;
+  --bezel-top: 12px;
+  --bezel-bottom: 14px;
+}
+
+/* === RESET DASAR === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans KR', 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #080808;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+
+/* =============================================
+   PHONE WRAPPER & FRAME
+   ============================================= */
+
+.phone-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 48px 20px;
+  /* Latar belakang studio gelap bergradien */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 30%, #16162a 0%, transparent 70%),
+    radial-gradient(ellipse 100% 60% at 50% 100%, #0a0a14 0%, transparent 70%),
+    #060608;
+}
+
+/* =============================================
+   PHONE DEVICE — bodi fisik smartphone Samsung
+   ============================================= */
+
+.phone-device {
+  position: relative;
+  /* Bezel — tebal bodi HP mengelilingi layar */
+  padding: var(--bezel-top) var(--bezel-side) var(--bezel-bottom);
+  border-radius: 52px;
+  flex-shrink: 0;
+
+  /* Tampil seperti browser di-zoom out 80% — HP terlihat lebih kecil di tengah */
+  transform: scale(0.8);
+  transform-origin: center center;
+
+  /* Material: dark phantom glass Samsung style */
+  background:
+    /* Kilauan tipis tepi kiri atas */
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.07) 0%,
+      rgba(255,255,255,0.02) 12%,
+      transparent 25%
+    ),
+    /* Bodi utama — gradien dark glass */
+    linear-gradient(
+      158deg,
+      #28282d 0%,
+      #1f1f23 18%,
+      #18181c 38%,
+      #141416 58%,
+      #111113 78%,
+      #0e0e10 100%
+    );
+
+  /* Bayangan berlapis premium */
+  box-shadow:
+    /* Rim highlight tipis (cahaya memantul di tepi) */
+    0 0 0 1px rgba(255, 255, 255, 0.11),
+    /* Outline tepi hitam pekat */
+    0 0 0 2.5px rgba(0, 0, 0, 0.92),
+    /* Bayangan kontak (HP berbaring di permukaan) */
+    0 2px 4px rgba(0, 0, 0, 0.7),
+    0 6px 14px rgba(0, 0, 0, 0.6),
+    /* Bayangan primer */
+    0 18px 44px rgba(0, 0, 0, 0.72),
+    /* Bayangan sekunder */
+    0 40px 80px rgba(0, 0, 0, 0.62),
+    /* Bayangan jauh / ambient */
+    0 70px 130px rgba(0, 0, 0, 0.48),
+    /* Ultra-ambient */
+    0 110px 200px rgba(0, 0, 0, 0.28),
+    /* Blue tint glow khas Samsung */
+    0 80px 160px rgba(18, 89, 195, 0.08),
+    /* Inner top rim (kaca depan memantul cahaya atas) */
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 2px 10px rgba(255, 255, 255, 0.03),
+    /* Inner depth shadow */
+    inset 0 -2px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* Earpiece / speaker grille atas — dot pattern */
+.phone-device::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 54px;
+  height: 5px;
+  /* Grid titik simulasi speaker */
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0.75) 1.4px,
+    transparent 1.4px
+  );
+  background-size: 5.5px 5px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.8),
+    0 0.5px 0 rgba(255,255,255,0.04);
+}
+
+/* USB-C port + speaker bawah */
+.phone-device::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 4px;
+  background: #080808;
+  border-radius: 2px;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.98),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    /* Titik speaker kiri-kanan USB */
+    -22px 0 0 3px rgba(0,0,0,0.6),
+    22px 0 0 3px rgba(0,0,0,0.6),
+    -22px 0 0 4px rgba(255,255,255,0.03),
+    22px 0 0 4px rgba(255,255,255,0.03);
+}
+
+/* Tombol volume kiri (atas = vol+, bawah = vol-) */
+.phone-side-left {
+  position: absolute;
+  left: -5.5px;
+  top: 118px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  z-index: 5;
+}
+
+/* Tombol power kanan */
+.phone-side-right {
+  position: absolute;
+  right: -5.5px;
+  top: 162px;
+  z-index: 5;
+}
+
+/* Base style tombol samping */
+.side-btn {
+  width: 5.5px;
+  height: 34px;
+  border-radius: 3px 0 0 3px;
+  cursor: default;
+
+  /* Material: sedikit lebih cerah dari bodi, berkesan logam */
+  background: linear-gradient(
+    to right,
+    #0a0a0c 0%,
+    #202024 45%,
+    #2a2a2e 70%,
+    #1e1e22 100%
+  );
+  box-shadow:
+    inset -1px 0 1.5px rgba(255, 255, 255, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4),
+    -2px 2px 6px rgba(0, 0, 0, 0.65);
+}
+
+.phone-side-right .side-btn {
+  height: 68px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(
+    to left,
+    #0a0a0c 0%,
+    #202024 45%,
+    #2a2a2e 70%,
+    #1e1e22 100%
+  );
+  box-shadow:
+    inset 1px 0 1.5px rgba(255, 255, 255, 0.06),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.4),
+    2px 2px 6px rgba(0, 0, 0, 0.65);
+}
+
+/* Lekukan kecil di tengah tombol power (tactile feel) */
+.phone-side-right .side-btn::after {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 14px;
+  margin: 27px auto 0;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* =============================================
+   PHONE FRAME — area layar (screen area)
+   ============================================= */
+
+.phone-frame {
+  position: relative;
+  width: var(--frame-width);
+  height: min(var(--frame-height), calc(100dvh - 100px));
+  border-radius: 40px;
+  background: var(--one-ui-bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  /* Efek glass screen — subtle edge */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.07),
+    0 0 0 0.5px rgba(0, 0, 0, 0.6);
+}
+
+/* Punch-hole kamera — premium radial gradient */
+.phone-frame::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 11px;
+  height: 11px;
+  background: radial-gradient(circle at 36% 36%, #1e1e1e 0%, #050505 55%, #000 100%);
+  border-radius: 50%;
+  z-index: 100;
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.08),
+    0 0 0 4px rgba(0, 0, 0, 0.2),
+    inset 0 0 4px rgba(0, 0, 0, 0.98),
+    inset 1.5px 1.5px 2px rgba(255, 255, 255, 0.07);
+}
+
+/* =============================================
+   STATUS BAR SIMULASI
+   ============================================= */
+
+.status-bar {
+  height: var(--status-bar-height);
+  background: var(--one-ui-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 24px 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  transition: background 0.3s;
+}
+
+/* Mode overlay — digunakan di detail.html di atas header gradient */
+.status-bar.overlay-mode {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+  color: white;
+}
+
+.status-time {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--one-ui-text-primary);
+  letter-spacing: -0.2px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.status-icons svg {
+  color: var(--one-ui-text-primary);
+  fill: currentColor;
+}
+
+/* =============================================
+   KONTEN HALAMAN (SCROLLABLE)
+   ============================================= */
+
+.phone-screen {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--one-ui-bg);
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+
+  /* Sembunyikan scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.phone-screen::-webkit-scrollbar { display: none; }
+
+/* =============================================
+   BOTTOM NAVIGATION BAR
+   ============================================= */
+
+.bottom-nav {
+  height: var(--bottom-nav-height);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-top: 1px solid rgba(229, 229, 234, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  padding: 10px 8px 0;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 50;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  text-decoration: none;
+  padding: 6px 20px 4px;
+  border-radius: 20px;
+  min-width: 60px;
+  min-height: 44px;
+  transition: background 0.15s, color 0.15s;
+  color: var(--one-ui-text-secondary);
+  position: relative;
+}
+
+.nav-item.active { color: var(--one-ui-primary); }
+
+.nav-item:active { background: rgba(18, 89, 195, 0.08); }
+
+.nav-item svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Home indicator bar (Samsung style) */
+.home-indicator {
+  height: var(--home-indicator-height);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-indicator::after {
+  content: '';
+  width: 134px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 3px;
+}
+
+/* =============================================
+   PAGE HEADER (Samsung One UI — judul besar)
+   ============================================= */
+
+.page-header {
+  padding: 16px 20px 8px;
+  background: var(--one-ui-bg);
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--one-ui-text-primary);
+  line-height: 1.15;
+  letter-spacing: -0.6px;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--one-ui-text-secondary);
+  margin-top: 3px;
+  font-weight: 400;
+}
+
+/* Header dengan tombol kembali */
+.back-header {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px 6px 6px;
+  background: var(--one-ui-bg);
+  min-height: 52px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--one-ui-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.back-btn:active { background: var(--one-ui-primary-light); }
+
+.back-header-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--one-ui-text-primary);
+  flex: 1;
+  text-align: center;
+  margin-right: 44px; /* kompensasi back button kiri */
+}
+
+/* =============================================
+   SUMMARY CHIPS (distribusi merata, tanpa scroll)
+   ============================================= */
+
+.summary-chips {
+  display: flex;
+  gap: 6px;
+  padding: 4px 16px 14px;
+  /* Tidak perlu scroll — 4 chip dibagi rata */
+  overflow: visible;
+}
+
+.chip {
+  flex: 1;            /* setiap chip mengisi lebar yang sama */
+  flex-shrink: 1;     /* boleh menyusut jika ruang sempit */
+  min-width: 0;       /* izinkan flex item mengecil */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 6px;
+  border-radius: 50px;
+  font-size: 12.5px;
+  font-weight: 500;
+  background: var(--one-ui-surface);
+  color: var(--one-ui-text-secondary);
+  border: 1.5px solid var(--one-ui-divider);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  line-height: 1;
+}
+
+.chip.active {
+  background: var(--one-ui-primary);
+  color: #fff;
+  border-color: var(--one-ui-primary);
+  box-shadow: 0 2px 10px rgba(18, 89, 195, 0.3);
+}
+
+.chip-count {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* =============================================
+   TASK LIST & CARDS
+   ============================================= */
+
+.task-list {
+  padding: 2px 16px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Swipe wrapper — membungkus card untuk efek swipe */
+.swipe-wrapper {
+  position: relative;
+  border-radius: var(--one-ui-radius-card);
+  overflow: hidden;
+}
+
+/* Area hijau yang ter-reveal saat swipe kanan */
+.swipe-action {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 68px;
+  background: var(--one-ui-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-100%);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  cursor: pointer;
+}
+
+.swipe-wrapper.swiped .swipe-action {
+  transform: translateX(0);
+}
+
+/* Task card */
+.task-card {
+  background: var(--one-ui-surface);
+  border-radius: var(--one-ui-radius-card);
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.07), 0 0 0 0.5px rgba(0,0,0,0.04);
+  position: relative;
+  animation: cardFadeIn 0.35s ease both;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.task-card:active { transform: scale(0.985); }
+
+.swipe-wrapper.swiped .task-card {
+  transform: translateX(68px);
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Garis batas kiri berwarna (indikator deadline) — DOMINAN 4px */
+.card-priority-bar {
+  width: 4px;
+  flex-shrink: 0;
+  border-radius: 0;
+}
+
+.deadline-urgent .card-priority-bar { background: var(--one-ui-red); }
+.deadline-soon .card-priority-bar   { background: var(--one-ui-yellow); }
+.deadline-normal .card-priority-bar { background: var(--one-ui-green); }
+
+/* Konten dalam card */
+.card-content {
+  flex: 1;
+  padding: 13px 12px 12px 13px;
+  min-width: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--one-ui-text-primary);
+  line-height: 1.35;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Animasi strikethrough saat selesai */
+.task-card.completed .card-title {
+  text-decoration: line-through;
+  text-decoration-color: rgba(0,0,0,0.4);
+  text-decoration-thickness: 1.5px;
+  opacity: 0.5;
+  transition: all 0.35s ease;
+}
+
+.task-card.completed { opacity: 0.65; }
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 9px;
+}
+
+.card-deadline-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--one-ui-text-secondary);
+  font-weight: 400;
+}
+
+.card-deadline-text svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+/* Badge prioritas */
+.priority-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 50px;
+  letter-spacing: 0.2px;
+  line-height: 1.4;
+}
+
+.priority-badge.priority-high   { background: #fff0ee; color: var(--one-ui-red); }
+.priority-badge.priority-medium { background: #fff5e6; color: #d97700; }
+.priority-badge.priority-low    { background: #edfff3; color: #1d8e42; }
+
+/* Tombol menu 3 titik */
+.card-menu-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.card-menu-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--one-ui-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background 0.15s;
+  margin-top: -4px;
+  margin-right: -4px;
+}
+
+.card-menu-btn:active { background: var(--one-ui-bg); }
+
+/* Dropdown mini */
+.card-dropdown {
+  position: absolute;
+  right: 0;
+  top: 36px;
+  background: var(--one-ui-surface);
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0,0,0,0.06);
+  overflow: hidden;
+  z-index: 20;
+  min-width: 120px;
+  display: none;
+  animation: dropdownIn 0.18s ease;
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: scale(0.92) translateY(-4px); transform-origin: top right; }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.card-dropdown.open { display: block; }
+
+.card-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 13px 16px;
+  text-align: left;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 400;
+  cursor: pointer;
+  color: var(--one-ui-text-primary);
+  transition: background 0.1s;
+  min-height: 44px;
+}
+
+.card-dropdown button:hover  { background: var(--one-ui-bg); }
+.card-dropdown button.delete-btn { color: var(--one-ui-red); }
+.card-dropdown button + button { border-top: 1px solid var(--one-ui-divider); }
+
+/* =============================================
+   FAB BUTTON (Floating Action Button)
+   ============================================= */
+
+.fab {
+  position: absolute;
+  bottom: calc(var(--bottom-nav-height) + var(--home-indicator-height) + 16px);
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--one-ui-primary);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(18, 89, 195, 0.45), 0 1px 4px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 30;
+  transition: box-shadow 0.2s;
+  text-decoration: none;
+}
+
+.fab:active { box-shadow: 0 2px 8px rgba(18, 89, 195, 0.35); }
+
+@keyframes fabBounce {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.88); }
+  65%  { transform: scale(1.12); }
+  85%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+.fab.bounce { animation: fabBounce 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* =============================================
+   EMPTY STATE
+   ============================================= */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 28px 80px;
+  text-align: center;
+}
+
+.empty-state-icon { margin-bottom: 20px; }
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--one-ui-text-primary);
+  margin-bottom: 7px;
+  letter-spacing: -0.2px;
+}
+
+.empty-subtitle {
+  font-size: 14px;
+  color: var(--one-ui-text-secondary);
+  line-height: 1.55;
+  max-width: 240px;
+}
+
+/* =============================================
+   FORM STYLES — Samsung One UI Underline Style
+   ============================================= */
+
+.form-section {
+  padding: 4px 20px 16px;
+}
+
+.form-field { margin-bottom: 22px; }
+
+.form-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--one-ui-text-secondary);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  border: none;
+  border-bottom: 1.5px solid var(--one-ui-divider);
+  border-radius: 0;
+  background: transparent;
+  padding: 8px 0 10px;
+  font-size: 16px;
+  font-family: inherit;
+  color: var(--one-ui-text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+  display: block;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-bottom-color: var(--one-ui-primary);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #b0b0b8;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.form-input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: light;
+}
+
+.form-error {
+  font-size: 12px;
+  color: var(--one-ui-red);
+  margin-top: 5px;
+  display: none;
+  font-weight: 400;
+}
+
+.form-field.has-error .form-input,
+.form-field.has-error .form-textarea {
+  border-bottom-color: var(--one-ui-red);
+}
+
+.form-field.has-error .form-error { display: block; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%  { transform: translateX(-7px); }
+  35%  { transform: translateX(7px); }
+  55%  { transform: translateX(-5px); }
+  75%  { transform: translateX(5px); }
+  90%  { transform: translateX(-2px); }
+}
+
+.form-field.shake { animation: shake 0.45s ease; }
+
+/* =============================================
+   PRIORITY SEGMENTED BUTTONS
+   ============================================= */
+
+.priority-segment {
+  display: flex;
+  background: var(--one-ui-surface-2);
+  border-radius: 14px;
+  padding: 4px;
+  gap: 2px;
+  border: 1px solid var(--one-ui-divider);
+}
+
+.priority-btn {
+  flex: 1;
+  padding: 10px 4px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--one-ui-text-secondary);
+  min-height: 44px;
+}
+
+.priority-btn.active-high {
+  background: var(--one-ui-red);
+  color: white;
+  box-shadow: 0 2px 10px rgba(255, 59, 48, 0.32);
+}
+
+.priority-btn.active-medium {
+  background: var(--one-ui-yellow);
+  color: white;
+  box-shadow: 0 2px 10px rgba(255, 149, 0, 0.32);
+}
+
+.priority-btn.active-low {
+  background: var(--one-ui-green);
+  color: white;
+  box-shadow: 0 2px 10px rgba(52, 199, 89, 0.32);
+}
+
+/* =============================================
+   LIVE PREVIEW CARD
+   ============================================= */
+
+.preview-section {
+  padding: 0 20px 16px;
+}
+
+.preview-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--one-ui-text-secondary);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.preview-task-card {
+  transition: all 0.2s ease;
+}
+
+/* =============================================
+   STICKY SAVE BUTTON
+   ============================================= */
+
+.form-footer {
+  padding: 12px 20px 16px;
+  background: var(--one-ui-bg);
+  border-top: 1px solid var(--one-ui-divider);
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--one-ui-radius-btn);
+  background: var(--one-ui-primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  letter-spacing: 0.2px;
+  min-height: 52px;
+}
+
+.btn-primary:active {
+  opacity: 0.82;
+  transform: scale(0.98);
+}
+
+/* =============================================
+   DETAIL PAGE — HEADER GRADIENT
+   ============================================= */
+
+.detail-header {
+  padding: 12px 16px 28px;
+  position: relative;
+}
+
+.detail-header.priority-high {
+  background: linear-gradient(140deg, #ff6b60 0%, #e62e23 100%);
+}
+
+.detail-header.priority-medium {
+  background: linear-gradient(140deg, #ffb340 0%, #e07800 100%);
+}
+
+.detail-header.priority-low {
+  background: linear-gradient(140deg, #36d65e 0%, #1ba33a 100%);
+}
+
+.detail-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.detail-back-btn {
+  background: rgba(255, 255, 255, 0.22);
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  transition: background 0.15s;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.detail-back-btn:active { background: rgba(255,255,255,0.35); }
+
+.detail-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  margin-top: 4px;
+}
+
+.detail-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.22);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 50px;
+  margin-top: 10px;
+}
+
+/* Samsung-style toggle switch */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-label-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.85);
+}
+
+.toggle-switch {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggle-track {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.28);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background 0.25s;
+  border: 1.5px solid rgba(255,255,255,0.3);
+}
+
+.toggle-track::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.toggle-input:checked + .toggle-track {
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(255,255,255,0.5);
+}
+
+.toggle-input:checked + .toggle-track::after {
+  transform: translateX(22px);
+  background: var(--one-ui-primary);
+}
+
+/* =============================================
+   INFO CARDS (halaman detail)
+   ============================================= */
+
+.detail-content {
+  padding: 16px 16px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-card {
+  background: var(--one-ui-surface);
+  border-radius: var(--one-ui-radius-card);
+  overflow: hidden;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  padding: 13px 16px;
+  gap: 12px;
+  position: relative;
+}
+
+/* Inset divider Samsung style (tidak melintasi ikon) */
+.info-row + .info-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 60px;
+  right: 0;
+  height: 1px;
+  background: var(--one-ui-divider);
+}
+
+.info-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.info-icon svg { fill: currentColor; }
+
+.info-icon.blue   { background: var(--one-ui-primary-light); color: var(--one-ui-primary); }
+.info-icon.red    { background: #fff0ee; color: var(--one-ui-red); }
+.info-icon.green  { background: #edfff3; color: var(--one-ui-green); }
+.info-icon.yellow { background: #fff5e6; color: #d97700; }
+.info-icon.grey   { background: var(--one-ui-bg); color: var(--one-ui-text-secondary); }
+
+.info-text { flex: 1; }
+
+.info-text-label {
+  font-size: 11px;
+  color: var(--one-ui-text-secondary);
+  margin-bottom: 1px;
+  font-weight: 400;
+}
+
+.info-text-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--one-ui-text-primary);
+  line-height: 1.3;
+}
+
+/* Card deskripsi */
+.desc-card {
+  background: var(--one-ui-surface);
+  border-radius: var(--one-ui-radius-card);
+  padding: 16px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.06);
+}
+
+.desc-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--one-ui-text-secondary);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.desc-card-text {
+  font-size: 14.5px;
+  color: var(--one-ui-text-primary);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.desc-card-empty { color: var(--one-ui-text-secondary); font-style: italic; }
+
+/* =============================================
+   ACTION BUTTONS (halaman detail)
+   ============================================= */
+
+.action-section {
+  padding: 0 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-outline {
+  width: 100%;
+  padding: 15px;
+  border: 1.5px solid var(--one-ui-primary);
+  border-radius: var(--one-ui-radius-btn);
+  background: transparent;
+  color: var(--one-ui-primary);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 52px;
+}
+
+.btn-outline:active { background: var(--one-ui-primary-light); }
+
+.btn-text-danger {
+  background: none;
+  border: none;
+  color: var(--one-ui-red);
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 12px 24px;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  min-height: 44px;
+  transition: opacity 0.15s;
+}
+
+.btn-text-danger:active { opacity: 0.65; }
+
+/* =============================================
+   BOTTOM SHEET MODAL (konfirmasi hapus)
+   ============================================= */
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: none;
+  transition: background 0.3s;
+}
+
+.modal-overlay.open {
+  background: rgba(0, 0, 0, 0.42);
+  pointer-events: all;
+}
+
+.bottom-sheet {
+  width: 100%;
+  background: var(--one-ui-surface);
+  border-radius: 28px 28px 0 0;
+  padding: 0 20px calc(var(--home-indicator-height) + 8px);
+  transform: translateY(100%);
+  transition: transform 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.open .bottom-sheet { transform: translateY(0); }
+
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--one-ui-divider);
+  border-radius: 2px;
+  margin: 12px auto 22px;
+}
+
+.sheet-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--one-ui-text-primary);
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.sheet-subtitle {
+  font-size: 14px;
+  color: var(--one-ui-text-secondary);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.sheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+
+.btn-danger {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--one-ui-radius-btn);
+  background: var(--one-ui-red);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  min-height: 52px;
+}
+
+.btn-danger:active { opacity: 0.82; }
+
+.btn-cancel {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: var(--one-ui-radius-btn);
+  background: var(--one-ui-surface-2);
+  color: var(--one-ui-text-primary);
+  font-size: 16px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 52px;
+  border: 1px solid var(--one-ui-divider);
+}
+
+.btn-cancel:active { background: var(--one-ui-divider); }
+
+/* =============================================
+   SEARCH PAGE
+   ============================================= */
+
+.search-bar-container {
+  padding: 8px 16px 10px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--one-ui-surface);
+  border-radius: 14px;
+  padding: 0 14px;
+  gap: 10px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.07);
+  border: 1.5px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.search-input-wrapper:focus-within {
+  border-color: var(--one-ui-primary);
+}
+
+.search-input-wrapper svg {
+  color: var(--one-ui-text-secondary);
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 13px 0;
+  font-size: 15.5px;
+  font-family: inherit;
+  color: var(--one-ui-text-primary);
+  outline: none;
+}
+
+.search-input::placeholder { color: var(--one-ui-text-secondary); }
+
+.search-clear-btn {
+  background: var(--one-ui-text-secondary);
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: white;
+  font-size: 12px;
+  padding: 0;
+  line-height: 1;
+}
+
+.search-clear-btn.visible { display: flex; }
+
+/* Filter chips di search page — kembalikan perilaku chip ke auto-size */
+.filter-chips {
+  padding: 2px 16px 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+/* Override: chip di dalam filter-chips tidak pakai flex:1 */
+.filter-chips .chip {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+/* Sort toggle */
+.sort-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px 10px;
+}
+
+.results-count {
+  font-size: 12px;
+  color: var(--one-ui-text-secondary);
+}
+
+.sort-btn {
+  background: var(--one-ui-surface);
+  border: 1px solid var(--one-ui-divider);
+  border-radius: 50px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--one-ui-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+  min-height: 44px;
+}
+
+.sort-btn.active-sort {
+  background: var(--one-ui-primary-light);
+  border-color: var(--one-ui-primary);
+  color: var(--one-ui-primary);
+}
+
+/* Divider section */
+.section-divider {
+  height: 8px;
+  background: var(--one-ui-bg);
+}
+
+/* =============================================
+   TOAST NOTIFIKASI KECIL
+   ============================================= */
+
+.toast {
+  position: absolute;
+  bottom: calc(var(--bottom-nav-height) + var(--home-indicator-height) + 80px);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(0,0,0,0.78);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.25s;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* =============================================
+   RESPONSIF: < 500px = fullscreen (no frame)
+   ============================================= */
+
+@media (max-width: 500px) {
+  body {
+    background: var(--one-ui-bg);
+    overflow: auto;
+  }
+
+  .phone-wrapper {
+    padding: 0;
+    background: var(--one-ui-bg);
+    min-height: 100%;
+    align-items: flex-start;
+  }
+
+  /* Sembunyikan seluruh dekorasi device di fullscreen */
+  .phone-device {
+    padding: 0;
+    background: var(--one-ui-bg);
+    border-radius: 0;
+    box-shadow: none;
+    transform: none; /* Reset scale di fullscreen */
+  }
+
+  .phone-device::before,
+  .phone-device::after { display: none; }
+
+  .phone-side-left,
+  .phone-side-right { display: none; }
+
+  .phone-frame {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .phone-frame::before { display: none; }
+}
+
+/* =============================================
+   ACCESSIBILITY
+   ============================================= */
+
+:focus-visible {
+  outline: 2px solid var(--one-ui-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button, a, input, textarea, select {
+  min-height: 44px;
+}
+
+/* Hapus min-height untuk elemen yang tidak perlu */
+.chip, .nav-label, .priority-badge, .card-deadline-text,
+.status-time, .status-icons, .sheet-handle {
+  min-height: unset;
+}

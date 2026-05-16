@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Cari Tugas — Smart Task Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="phone-wrapper">
+  <div class="phone-device">
+
+    <div class="phone-side-left" aria-hidden="true">
+      <div class="side-btn" title="Volume Up"></div>
+      <div class="side-btn" title="Volume Down"></div>
+    </div>
+    <div class="phone-side-right" aria-hidden="true">
+      <div class="side-btn" title="Power"></div>
+    </div>
+
+  <div class="phone-frame">
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span class="status-time" id="statusTime">9:41</span>
+      <div class="status-icons">
+        <svg width="16" height="12" viewBox="0 0 16 12">
+          <rect x="0"    y="8"   width="3" height="4"  rx="0.5"/>
+          <rect x="4.3"  y="5.5" width="3" height="6.5" rx="0.5"/>
+          <rect x="8.6"  y="3"   width="3" height="9"  rx="0.5"/>
+          <rect x="12.9" y="0"   width="3" height="12" rx="0.5"/>
+        </svg>
+        <svg width="16" height="12" viewBox="0 0 24 18">
+          <circle cx="12" cy="16" r="2"/>
+          <path d="M6.5 11.5C8 9.9 9.9 9 12 9s3.9.9 5.5 2.5l1.8-1.8C17.1 7.5 14.7 6.5 12 6.5s-5.1 1-7.3 3.2z" opacity=".7"/>
+          <path d="M2.5 7.5C5.1 4.8 8.4 3.2 12 3.2s6.9 1.6 9.5 4.3l1.8-1.8C20.5 2.9 16.5 1 12 1S3.5 2.9.7 5.7z" opacity=".4"/>
+        </svg>
+        <svg width="26" height="12" viewBox="0 0 26 12">
+          <rect x="0" y="0.5" width="22" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.3"/>
+          <rect x="22.8" y="3.5" width="2.5" height="5" rx="1" opacity=".7"/>
+          <rect x="1.5" y="2" width="17" height="8" rx="1.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Konten halaman -->
+    <div class="phone-screen">
+
+      <!-- Header besar One UI -->
+      <div class="page-header">
+        <h1 class="page-title">Cari Tugas</h1>
+        <p class="page-subtitle">Temukan tugas dengan cepat</p>
+      </div>
+
+      <!-- Search bar prominan -->
+      <div class="search-bar-container">
+        <div class="search-input-wrapper">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input
+            type="search"
+            id="searchInput"
+            class="search-input"
+            placeholder="Cari judul atau deskripsi..."
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+            aria-label="Cari tugas"
+            oninput="handleSearch()"
+          >
+          <button class="search-clear-btn" id="clearBtn"
+                  onclick="clearSearch()" aria-label="Hapus pencarian">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Filter chips multi-select -->
+      <div class="filter-chips" id="filterChips" role="group" aria-label="Filter tugas">
+        <button class="chip active" data-filter="all" onclick="toggleFilter('all')">Semua</button>
+        <button class="chip" data-filter="urgent" onclick="toggleFilter('urgent')">🔴 Mendesak</button>
+        <button class="chip" data-filter="high" onclick="toggleFilter('high')">High</button>
+        <button class="chip" data-filter="medium" onclick="toggleFilter('medium')">Medium</button>
+        <button class="chip" data-filter="low" onclick="toggleFilter('low')">Low</button>
+        <button class="chip" data-filter="done" onclick="toggleFilter('done')">✓ Selesai</button>
+      </div>
+
+      <!-- Baris sort + jumlah hasil -->
+      <div class="sort-row">
+        <span class="results-count" id="resultsCount">Semua tugas</span>
+        <div style="display:flex;gap:6px">
+          <button class="sort-btn active-sort" id="sortDeadline"
+                  onclick="setSort('deadline')" aria-pressed="true">
+            Deadline ↑
+          </button>
+          <button class="sort-btn" id="sortPriority"
+                  onclick="setSort('priority')" aria-pressed="false">
+            Prioritas ↑
+          </button>
+        </div>
+      </div>
+
+      <!-- Hasil pencarian -->
+      <div class="task-list" id="searchResults" role="list">
+        <!-- Dirender oleh JS -->
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-state-icon">
+          <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="48" r="30" fill="#e8f0fc"/>
+            <circle cx="50" cy="48" r="22" fill="white"/>
+            <path d="M38 48 L62 48" stroke="#c0d3f5" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M50 36 L50 60" stroke="#c0d3f5" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M70 68 L88 88" stroke="#c0d3f5" stroke-width="6" stroke-linecap="round"/>
+            <circle cx="50" cy="48" r="30" fill="none" stroke="#b8cef0" stroke-width="4"/>
+            <!-- X di tengah -->
+            <path d="M43 41 L57 55" stroke="#94aedd" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M57 41 L43 55" stroke="#94aedd" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p class="empty-title">Tidak ada tugas ditemukan</p>
+        <p class="empty-subtitle">Coba kata kunci lain atau ubah filter yang dipilih</p>
+      </div>
+
+      <!-- Spacer bawah -->
+      <div style="height:100px"></div>
+
+    </div><!-- /phone-screen -->
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" role="navigation" aria-label="Navigasi utama">
+      <a href="index.html" class="nav-item" aria-label="Beranda">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        <span class="nav-label">Beranda</span>
+      </a>
+      <a href="add-task.html" class="nav-item" aria-label="Tambah tugas">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        <span class="nav-label">Tambah</span>
+      </a>
+      <a href="search.html" class="nav-item active" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <span class="nav-label">Cari</span>
+      </a>
+    </nav>
+
+    <!-- Home indicator -->
+    <div class="home-indicator" aria-hidden="true"></div>
+
+    <!-- Modal konfirmasi hapus -->
+    <div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
+      <div class="bottom-sheet">
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <h2 class="sheet-title" id="deleteTitle">Hapus tugas ini?</h2>
+        <p class="sheet-subtitle">Tugas yang dihapus tidak bisa dikembalikan lagi.</p>
+        <div class="sheet-actions">
+          <button class="btn-danger" onclick="executeDelete()">Hapus</button>
+          <button class="btn-cancel" onclick="closeModal('deleteModal')">Batal</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /phone-frame -->
+  </div><!-- /phone-device -->
+</div><!-- /phone-wrapper -->
+
+<script src="js/app.js"></script>
+<script src="js/zoom-control.js"></script>
+<script>
+  // State pencarian dan filter
+  let searchQuery = '';
+  let activeFilters = new Set(['all']); // multi-select
+  let currentSort = 'deadline'; // 'deadline' | 'priority'
+
+  // Toggle filter chip (multi-select dengan logika "Semua" eksklusif)
+  function toggleFilter(filter) {
+    if (filter === 'all') {
+      activeFilters = new Set(['all']);
+    } else {
+      activeFilters.delete('all');
+      if (activeFilters.has(filter)) {
+        activeFilters.delete(filter);
+        if (activeFilters.size === 0) activeFilters.add('all');
+      } else {
+        activeFilters.add(filter);
+      }
+    }
+
+    // Update tampilan chip
+    document.querySelectorAll('#filterChips .chip').forEach(chip => {
+      const f = chip.dataset.filter;
+      const isActive = activeFilters.has(f);
+      chip.classList.toggle('active', isActive);
+      chip.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    renderResults();
+  }
+
+  // Set mode sort
+  function setSort(mode) {
+    currentSort = mode;
+    document.getElementById('sortDeadline').classList.toggle('active-sort', mode === 'deadline');
+    document.getElementById('sortDeadline').setAttribute('aria-pressed', mode === 'deadline');
+    document.getElementById('sortPriority').classList.toggle('active-sort', mode === 'priority');
+    document.getElementById('sortPriority').setAttribute('aria-pressed', mode === 'priority');
+    renderResults();
+  }
+
+  // Handler input pencarian real-time
+  function handleSearch() {
+    searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+    const clearBtn = document.getElementById('clearBtn');
+    clearBtn.classList.toggle('visible', searchQuery.length > 0);
+    renderResults();
+  }
+
+  // Hapus pencarian
+  function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    searchQuery = '';
+    document.getElementById('clearBtn').classList.remove('visible');
+    document.getElementById('searchInput').focus();
+    renderResults();
+  }
+
+  // Sort berdasarkan prioritas saja
+  function sortByPriority(tasks) {
+    return [...tasks].sort((a, b) => {
+      const po = PRIORITY_ORDER[a.priority] - PRIORITY_ORDER[b.priority];
+      if (po !== 0) return po;
+      return new Date(a.deadline) - new Date(b.deadline);
+    });
+  }
+
+  // Render hasil pencarian
+  function renderResults() {
+    let tasks = getTasks();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Filter berdasarkan chips aktif
+    if (!activeFilters.has('all')) {
+      tasks = tasks.filter(t => {
+        // Cek setiap filter yang aktif (OR logic)
+        if (activeFilters.has('urgent') && !t.completed && t.deadline && getDeadlineDays(t.deadline) <= 1) return true;
+        if (activeFilters.has('high')   && t.priority === 'high')   return true;
+        if (activeFilters.has('medium') && t.priority === 'medium') return true;
+        if (activeFilters.has('low')    && t.priority === 'low')    return true;
+        if (activeFilters.has('done')   && t.completed)             return true;
+        return false;
+      });
+    }
+
+    // Filter berdasarkan query teks
+    if (searchQuery) {
+      tasks = tasks.filter(t =>
+        t.title.toLowerCase().includes(searchQuery) ||
+        (t.description && t.description.toLowerCase().includes(searchQuery))
+      );
+    }
+
+    // Sort
+    const sorted = currentSort === 'priority' ? sortByPriority(tasks) : sortTasks(tasks);
+
+    const resultsEl = document.getElementById('searchResults');
+    const emptyEl   = document.getElementById('emptyState');
+    const countEl   = document.getElementById('resultsCount');
+
+    if (sorted.length === 0) {
+      resultsEl.innerHTML = '';
+      emptyEl.style.display = 'flex';
+      countEl.textContent = searchQuery || !activeFilters.has('all') ? 'Tidak ada hasil' : 'Belum ada tugas';
+    } else {
+      emptyEl.style.display = 'none';
+      resultsEl.innerHTML = sorted.map((task, i) => buildTaskCard(task, i)).join('');
+      initSwipeGestures(resultsEl);
+      const total = getTasks().length;
+      countEl.textContent = sorted.length === total
+        ? `${total} tugas`
+        : `${sorted.length} dari ${total} tugas`;
+    }
+  }
+
+  // Override renderTasks agar hasil search juga refresh setelah hapus/complete
+  function renderTasks() {
+    renderResults();
+  }
+
+  // Render saat halaman dimuat
+  renderResults();
+
+  // Fokus ke search input
+  setTimeout(() => document.getElementById('searchInput').focus(), 100);
+</script>
+</body>
+</html>
