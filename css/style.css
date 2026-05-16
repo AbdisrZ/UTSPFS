@@ -257,7 +257,7 @@ body {
 .phone-frame {
   position: relative;
   width: var(--frame-width);
-  height: min(var(--frame-height), calc(100dvh - 100px));
+  height: var(--frame-height); /* Selalu 20:9 — scale(0.8) sudah handle viewport */
   border-radius: 40px;
   background: var(--one-ui-bg);
   overflow: hidden;

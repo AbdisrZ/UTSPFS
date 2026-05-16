@@ -470,3 +470,90 @@ function getTaskStats() {
 function getUrlParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
+
+// =============================================
+// SEED DATA — isi otomatis saat pertama buka
+// Tanggal dibuat dinamis relatif dari hari ini
+// =============================================
+
+function seedSampleData() {
+  if (getTasks().length > 0) return; // Jangan overwrite data yang sudah ada
+
+  const base = Date.now();
+  const d = (offsetDays) => {
+    const date = new Date();
+    date.setDate(date.getDate() + offsetDays);
+    return date.toISOString().split('T')[0];
+  };
+
+  const samples = [
+    {
+      id: String(base - 600000),
+      title: 'Kerjakan laporan UTS PFS',
+      description: 'Buat laporan lengkap mencakup semua fitur yang sudah dikerjakan. Sertakan screenshot dan penjelasan setiap halaman.',
+      deadline: d(1),
+      priority: 'high',
+      completed: false,
+      createdAt: base - 600000
+    },
+    {
+      id: String(base - 500000),
+      title: 'Presentasi kelompok Algoritma',
+      description: 'Persiapkan slide presentasi dan bagi tugas dengan anggota kelompok. Latihan minimal 2x sebelum hari H.',
+      deadline: d(1),
+      priority: 'high',
+      completed: false,
+      createdAt: base - 500000
+    },
+    {
+      id: String(base - 400000),
+      title: 'Submit tugas Basis Data',
+      description: 'Upload file SQL dan laporan normalisasi ke portal akademik.',
+      deadline: d(2),
+      priority: 'high',
+      completed: false,
+      createdAt: base - 400000
+    },
+    {
+      id: String(base - 300000),
+      title: 'Baca materi Jaringan Komputer',
+      description: 'Pelajari bab 8-10 tentang protokol TCP/IP dan subnetting untuk persiapan ujian.',
+      deadline: d(3),
+      priority: 'medium',
+      completed: false,
+      createdAt: base - 300000
+    },
+    {
+      id: String(base - 200000),
+      title: 'Review catatan Kalkulus',
+      description: 'Ulangi materi integral lipat dan persamaan diferensial.',
+      deadline: d(5),
+      priority: 'medium',
+      completed: false,
+      createdAt: base - 200000
+    },
+    {
+      id: String(base - 100000),
+      title: 'Daftar seminar teknologi kampus',
+      description: 'Pendaftaran seminar AI & Machine Learning ditutup akhir minggu ini.',
+      deadline: d(7),
+      priority: 'low',
+      completed: false,
+      createdAt: base - 100000
+    },
+    {
+      id: String(base - 50000),
+      title: 'Beli buku referensi Struktur Data',
+      description: 'Cari di toko buku atau pinjam dari perpustakaan pusat lantai 3.',
+      deadline: d(10),
+      priority: 'low',
+      completed: true,
+      createdAt: base - 50000
+    }
+  ];
+
+  saveTasks(samples);
+}
+
+// Jalankan seed saat script dimuat
+seedSampleData();
