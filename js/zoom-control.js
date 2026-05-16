@@ -24,8 +24,20 @@
 
     const device = document.querySelector('.phone-device');
     if (device) {
-      device.style.transform       = `scale(${currentZoom / 100})`;
+      const scale = currentZoom / 100;
+      device.style.transform       = `scale(${scale})`;
       device.style.transformOrigin = 'center center';
+
+      /*
+        Kompensasi negative margin agar layout space ikut mengecil.
+        offsetHeight = tinggi alami elemen (tidak dipengaruhi transform).
+        Rumus: (1 - scale) / 2 * naturalHeight
+        Contoh 80%: (1-0.8)/2 * 893 = 89.3px tiap sisi
+      */
+      const naturalH = device.offsetHeight;
+      const compensation = Math.round(naturalH * (1 - scale) / 2);
+      device.style.marginTop    = `-${compensation}px`;
+      device.style.marginBottom = `-${compensation}px`;
     }
 
     // Sinkronkan semua elemen UI zoom panel

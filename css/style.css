@@ -65,7 +65,7 @@ body {
   justify-content: center;
   min-height: 100vh;
   width: 100%;
-  padding: 48px 20px;
+  padding: 16px 20px;
   /* Latar belakang studio gelap bergradien */
   background:
     radial-gradient(ellipse 70% 55% at 50% 30%, #16162a 0%, transparent 70%),
@@ -84,9 +84,18 @@ body {
   border-radius: 52px;
   flex-shrink: 0;
 
-  /* Tampil seperti browser di-zoom out 80% — HP terlihat lebih kecil di tengah */
+  /* Tampil seperti browser di-zoom out 80% */
   transform: scale(0.8);
   transform-origin: center center;
+
+  /*
+    Kompensasi layout: transform tidak mengecilkan layout space.
+    Rumus: (1 - scale) / 2 * natural_height
+    Device alami: 867 + 12 + 14 = 893px  →  893 * 0.1 ≈ 89px tiap sisi
+    Diupdate otomatis oleh zoom-control.js saat zoom berubah.
+  */
+  margin-top: -89px;
+  margin-bottom: -89px;
 
   /* Material: dark phantom glass Samsung style */
   background:
@@ -1545,7 +1554,8 @@ body {
     background: var(--one-ui-bg);
     border-radius: 0;
     box-shadow: none;
-    transform: none; /* Reset scale di fullscreen */
+    transform: none;
+    margin: 0; /* Reset margin kompensasi */
   }
 
   .phone-device::before,
